@@ -36,4 +36,4 @@ We apply our method on four datasets, the SWAT and WADI datasets, in which we di
 
 ## Result
 
-We  use dataset PSM for testing demonstration, you can run it directly and get the corresponding result.
+We  use dataset PSM for testing demonstration, you can run main.py directly and get the corresponding result.
