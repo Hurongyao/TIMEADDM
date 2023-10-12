@@ -120,31 +120,22 @@ def metrics_calculates(values, re_values, labels):
 
 def metrics_calculate(values, re_values, labels):
     #SMAP mind=[0.1,0.2,0.3,0.4]
-    #PSM mind = [0.25,0.25,0.25,0.25]
+    #PSM mind = [0.1,0.2,0.3,0.4]
     #SWAT mind = [0.25,0.25,0.25,0.25]
     #WADI mind = [0.25,0.25,0.25,0.25]
 
-    mind = [0.25,0.25,0.25,0.25]
-    tts = [100,200,500,1000]
+    mind = [0.1,0.2,0.3,0.4]
+   
 
     scores = t.zeros_like(labels[0])
     i = 0
     result = t.chunk(re_values, 4, dim=0)
     for chunk in result:
-       
-
         score = anomaly_scoring(values, chunk)
-
         scores = scores + (score*mind[i])
         i = i + 1
-
-
     preds, _ = evaluate(labels, scores,adj=False)
     preds_,_ = evaluate(labels, scores,adj=True)
-
-
-
-
 
     f1 = f1_score(y_true=labels, y_pred=preds)
     pre = precision_score(y_true=labels, y_pred=preds)
