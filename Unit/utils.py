@@ -96,11 +96,9 @@ def metrics_calculates(values, re_values, labels):
 
 
     preds, _ = evaluate(labels, scores,adj=False)
-    psm = preds.numpy()
-    np.savetxt('./test/swat.csv',psm)
+    
     preds_,_ = evaluate(labels, scores,adj=True)
-    psm_ = preds_.numpy()
-    np.savetxt('./test/swat_.csv', psm_)
+    
     print(preds_.shape)
 
 
@@ -121,11 +119,12 @@ def metrics_calculates(values, re_values, labels):
     return f1_
 
 def metrics_calculate(values, re_values, labels):
-    #smap mind=[0.1,0.2,0.3,0.4]
+    #SMAP mind=[0.1,0.2,0.3,0.4]
     #PSM mind = [0.25,0.25,0.25,0.25]
     #SWAT mind = [0.25,0.25,0.25,0.25]
+    #WADI mind = [0.25,0.25,0.25,0.25]
 
-    mind = [0.1,0.2,0.3,0.4]
+    mind = [0.25,0.25,0.25,0.25]
     tts = [100,200,500,1000]
 
     scores = t.zeros_like(labels[0])
