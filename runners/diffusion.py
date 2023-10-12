@@ -137,7 +137,7 @@ class Diffusion(object):
             print('Load SMAP')
             dataset = np.load('./data/SMAP/SMAP/SMAP_train.npy')
 
-            ckpt1 = torch.load('./trained_models/model_hs=64_bs=128_datapath=SMAP1_lr=0.001__epochs=200_clip=5.pt',
+            ckpt1 = torch.load('',
                                map_location=self.device)
             length = int(dataset.shape[0]*0.9)
             traindata = dataset[:length]
@@ -152,7 +152,7 @@ class Diffusion(object):
             dataset = scaler.fit_transform(dataset)
 
             ckpt1 = torch.load(
-                './earlysave/best_newtest1WADI_network.pth',
+                '',
                 map_location=self.device)
 
             length= int(dataset.shape[0]*0.8)
@@ -167,7 +167,7 @@ class Diffusion(object):
             dataset = scaler.fit_transform(dataset)
 
             ckpt1 = torch.load(
-                './trained_models/model_hs=128_bs=128_datapath=SWAT1_lr=0.001__epochs=200_clip=5.pt',
+                '',
                 map_location=self.device)
             length = int(dataset.shape[0]* 0.95)
             testdata = dataset[length:]
