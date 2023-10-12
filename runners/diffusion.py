@@ -123,8 +123,7 @@ class Diffusion(object):
         )
         if self.model_var_type == "fixedlarge":
             self.logvar = betas.log()
-            # torch.cat(
-            # [posterior_variance[1:2], betas[1:]], dim=0).log()
+           
         elif self.model_var_type == "fixedsmall":
             self.logvar = posterior_variance.clamp(min=1e-20).log()
 
