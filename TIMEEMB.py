@@ -19,7 +19,7 @@ early_stopping = EarlyStopping('./earlysave')
 parser = argparse.ArgumentParser(description='LSTM_AE TOY EXAMPLE')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                     help='input batch size for training (default: 128)')
-parser.add_argument('--epochs', type=int, default=1, metavar='N', help='number of epochs to train')
+parser.add_argument('--epochs', type=int, default=200, metavar='N', help='number of epochs to train')
 parser.add_argument('--optim', default='Adam', type=str, help='Optimizer to use')
 parser.add_argument('--hidden-size', type=int, default=64, metavar='N', help='LSTM hidden state size')
 parser.add_argument('--lr', type=float, default=0.001, metavar='LR', help='learning rate')#0.001
