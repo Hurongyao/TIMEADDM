@@ -192,7 +192,7 @@ class Diffusion(object):
             label = label.astype(None)
             testdata = dataset[length:]
 
-        #lstm 加载
+        #Load lstm 
         lstmz = LSTMAE(input_size=args2.input_size, hidden_size=args2.hidden_size, dropout_ratio=args2.dropout,
                        seq_len=args2.seq_len)
         lstmz.to(self.device)
@@ -380,19 +380,12 @@ class Diffusion(object):
         datalast = time.time()
         print((datalast -datafirst )/60)
 
-
-
-
-
         model = Model(self.config)
 
         if not self.args.use_pretrained:
             if getattr(self.config.sampling, "ckpt_id", None) is None:
                #load model
                 states = torch.load(
-                   # os.path.join('./savemodel/', "ckpt_1.pth"),
-                   # './savemodel/ckpt.pth',
-                    #os.path.join(self.args.log_path, "ckpt_2000.pth"),
                     './earlysave/best_newtestWADI_DMnetwork.pth',
                     map_location=self.config.device,
                 )
@@ -441,11 +434,6 @@ class Diffusion(object):
             self.sample_sequence(model,lstmz)
         else:
             raise NotImplementedError("Sample procedeure not defined")
-
-
-
-
-
 
     def sample_sequence(self, model,lstmz):
 
