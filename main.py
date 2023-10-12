@@ -234,7 +234,7 @@ def main():
             emb.main()
             #The corresponding TIEMEMB parameters of the different datasets are as follows,if you change the dataset, you should modify the parameters.
             #{datset = WADI , lr = 0.001 , hs = 128, windowlength = 100}
-            #{datset = SWAT , lr = 0.0001 , hs = 64, windowlength = 64}
+            #{datset = SWAT , lr = 0.001 , hs = 64, windowlength = 64}
             #{datset = SMAP , lr = 0.001 , hs = 64, windowlength = 64}
             #{datset = PSM , lr = 0.0001 , hs = 64, windowlength = 64}
             print("Diffusion step")
