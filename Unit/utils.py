@@ -132,8 +132,7 @@ def metrics_calculate(values, re_values, labels):
     i = 0
     result = t.chunk(re_values, 4, dim=0)
     for chunk in result:
-        #chunks =chunk.numpy()
-        #np.savetxt('./test/tensor{}.csv'.format(i), chunks, delimiter=',')
+       
 
         score = anomaly_scoring(values, chunk)
 
@@ -173,7 +172,7 @@ def evaluate(labels, scores, step=1000, adj=True):
 
     best_f1 = 0.0
     best_preds = None
-    # 在max和min之间隔开为1000个数，迭代用数值作为阈值计算f1
+    
     for th in tqdm(t.linspace(min_score, max_score, step), ncols=70):
 
         preds = (scores > th).numpy().astype(int)
@@ -221,7 +220,7 @@ def load_pickle(file_path):
         return data
 
 
-# [10000,25]->[9881, 120, 25]
+
 def get_from_one(ts, window_size, stride):
     ts_length = ts.shape[0]
     print(ts_length)
@@ -233,11 +232,11 @@ def get_from_one(ts, window_size, stride):
     return np.array(samples)
 
 
-# 把数据中的数值为0的列去除
+
 def remove_all_same(train_x, test_x):
     remove_idx = []
     for col in range(train_x.shape[1]):
-        #该列max等于min，即该列数据全为0，无意义，删除
+       
         if max(train_x[:, col]) == min(train_x[:, col]):
             remove_idx.append(col)
         else:
