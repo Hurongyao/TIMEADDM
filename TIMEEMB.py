@@ -31,8 +31,8 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N', help='h
 parser.add_argument('--model-type', default='LSTMAE', help='currently only LSTMAE')
 parser.add_argument('--model-dir', default='trained_models', help='directory of model for saving checkpoint')
 parser.add_argument('--seq-len', default=50, help='sequence full size')
-parser.add_argument('--datapath',default='./data/WADI',help='datapath')
-parser.add_argument('--data',default="WADI1",help='data')
+parser.add_argument('--datapath',default='./data/PSM',help='datapath')
+parser.add_argument('--data',default="PSM",help='data')
 parser.add_argument('--run-grid-search', action='store_true', default=False, help='Running hyper-parameters grid search')
 
 args = parser.parse_args(args=[])
@@ -90,14 +90,7 @@ def main():
         if early_stopping.early_stop :
             print("*******************EMB early stop*********************")
             break
-
-
-
-
-    # Save model
-    #modelpath = os.path.join(args.model_dir, f'model_hs={args.hidden_size}_bs={args.batch_size}'f'_datapath={args.data}_lr={args.lr}_'
-    #                                                         f'_epochs={args.epochs}_clip={args.grad_clipping}.pt')
-    #torch.save(model.state_dict(), modelpath)
+   
     print("END")
 
 
@@ -109,22 +102,20 @@ def create_toy_data(num_of_sequences=10000, sequence_len=64) -> torch.tensor:
     :param sequence_len: length of each sequence
     :return: pytorch tensor containing the sequences
     """
-    # Random uniform distribution
-    #toy_data = torch.rand((num_of_sequences, sequence_len, 38))
-    #toy_data = np.load('./ServerMachineDataset//SMD_train.npy')
+    
     path = args.datapath
-    #toy_data = np.load(path)
-    #toy_data =pd.read_csv('./data/PSM/PSM/train.csv')
-    toy_data = np.load('./data/WADI/wadi_train.npy')
-    #toy_data = toy_data.values[:, 1:]
-    #toy_data = np.nan_to_num(toy_data)
+   
+    toy_data =pd.read_csv('./data/PSM/PSM/train.csv')
+    
+    toy_data = toy_data.values[:, 1:]
+    toy_data = np.nan_to_num(toy_data)
 
 
     scaler = StandardScaler()
 
     toy_data = scaler.fit_transform(toy_data)
 
-    #toy_data = toy_data.astype(None)
+    toy_data = toy_data.astype(None)
 
     length = int( len(toy_data))
     toy_data = toy_data[:length]
@@ -149,12 +140,12 @@ def create_dataloaders(batch_size, train_ratio=0.75, val_ratio=0.25):
 
     train_data = toy_data[:int(len * train_ratio), :]
     val_data = toy_data[int(train_ratio * len):int(len * (train_ratio + val_ratio)), :]
-    #test_data = toy_data[int((train_ratio + val_ratio) * len):, :]
+   
 
     print(f'Datasets shapes: Train={train_data.shape}; Validation={val_data.shape}')
     train_iter = torch.utils.data.DataLoader(toy_dataset(train_data), batch_size=batch_size, drop_last=True,shuffle=True)
     val_iter = torch.utils.data.DataLoader(toy_dataset(val_data), batch_size=batch_size,  drop_last=True,shuffle=True)
-   # test_iter = torch.utils.data.DataLoader(toy_dataset(test_data), batch_size=batch_size, shuffle=False)
+  
 
     return train_iter, val_iter
 
@@ -177,53 +168,6 @@ def plot_toy_data(toy_example, description, color='b'):
     plt.title(f'Single value vs. time for toy example {description}')
     plt.show()
 
-def detect(model,modelpath):
-
-
-    ckpt = torch.load(modelpath, map_location=device)
-
-
-    model.load_state_dict(ckpt)
-    model.eval()
-
-    test_data = np.load('./data/WADI/wadi_test.npy')
-    #test_data = test_data.values[:, 1:]
-    #test_data = np.nan_to_num(test_data)
-
-    scaler = StandardScaler()
-
-    test_data = scaler.fit_transform(test_data)
-    test_data = torch.tensor(test_data)
-
-    label = np.load('./data/WADI/wadi_labels.npy').astype(float)
-    #label = label.values[:, 1:]
-    #label = label.astype(None)
-    label = torch.tensor(label)
-    re_datas = []
-
-    dataloader = DataLoader(
-        test_data, batch_size=128, shuffle=True, num_workers=0, drop_last=True, pin_memory=True)
-
-    i = 0
-    for data in dataloader:
-        i += 1
-        data = torch.reshape(data, (2, 64, args.input_size))
-        data = data.type(torch.FloatTensor)
-
-        x_0 = data.to(device)
-
-        data = model(x_0,'all')
-        data = torch.reshape(data,(128,args.input_size))
-        re_datas.extend(data)
-    re_datas = torch.tensor([item.cpu().detach().numpy() for item in re_datas])
-    label = label[:int(len(re_datas))]
-    real_data = test_data[:int(len(re_datas))]
-
-    print(real_data.shape)
-    print(re_datas.shape)
-    print(label.shape)
-
-    metrics_calculates(real_data, re_datas, label)
 
 def plot_orig_vs_reconstructed(model, test_iter,modelpath, num_to_plot=2):
     """
