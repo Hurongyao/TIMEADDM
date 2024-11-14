@@ -474,8 +474,8 @@ class Diffusion(object):
             label = label.astype(None)
             label = torch.Tensor(label)
 
-            testdata = testdata[:1280]
-            label = label[:1280]
+            #testdata = testdata[:1280]
+            #label = label[:1280]
 
             dataloader = DataLoader(
                 testdata, batch_size=128, shuffle=True, num_workers=0, drop_last=True,
